@@ -1,0 +1,295 @@
+nav{
+    //aula 1
+    width: 100%;
+    background: #000;
+
+    ul{
+        list-style: none;
+        padding: 20px 0;
+    }
+
+    li{
+        color: rebeccapurple;
+        margin: 0 20px;
+
+        font: {
+            family: "Times New Roman", sans-serif;
+            weight: bold;
+            size: 30px;
+        }
+    }
+
+}
+
+
+
+//aula 2
+a{
+    color: red;
+    &:hover {
+        color: blue;
+    }
+}
+
+
+
+
+
+//aula 3 usar variaveis sempre no topo
+$width: 100%;
+$font-size: 1.2rem;
+$color: cyan;
+$height: 300px;
+$font: 'teste fonte';
+$margin: 10px 20px 30px 40px;
+
+//map
+$social: (
+    facebook: #354554,
+    github: #959655,
+    twitter: #525322,
+);
+
+
+div{
+    color: $color;
+    font-size: $font-size;
+    width: $width;
+    height: $height;
+}
+
+div{
+    font-family: $font;
+    margin: $margin
+}
+
+
+
+
+
+
+
+//aula 4
+//interpolação
+
+$name: destaque;
+$attr: border;
+$font-size: 12px;
+$line-height: 30px;
+
+p.#{$name}{
+    #{$attr}-color: blue;
+    font: #{$font-size}/#{$line-height}
+}
+
+
+
+
+
+//aula 5
+//extend
+
+.msg {
+    border: 1px solid;
+    padding: 4px;
+    text-align: center;
+}
+
+.msg-error {
+    @extend .msg;
+    border-color: #ff0000;
+    color: #ff0000;
+}
+
+.msg-alert {
+    @extend .msg;
+    border-color: #ff8e00;
+    color: #ff8e00;
+}
+
+
+a:hover{
+    text-decoration: underline;
+}
+
+.marginStyle{
+    margin: 2px;
+}
+
+.hoverlink{
+    @extend a:hover;
+    @extend .marginStyle;
+    color: #000;
+}
+
+
+
+//aula 7
+//mixins(como fosse uma rotina) e include
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+       -moz-border-radius: $radius;
+        -ms-border-radius: $radius;
+            border-radius: $radius;
+}
+
+.box{
+    @include border-radius(10px);
+}
+ 
+
+@mixin titulo($size, $color: blue) {
+    color: $color;
+    font-size: $size;
+}
+
+h1{
+    @include titulo(14px)
+}
+
+h2{
+    @include titulo(14px, green)
+}
+
+@mixin pad($values...) {
+    padding: $values;
+}
+
+
+p{
+    @include pad(20px 40px 10px)
+}
+
+
+
+//aula 8
+//functions tem que ter um retorno 
+
+$red: 100;
+$green: 200;
+$blue: 300;
+
+//nativa
+body{
+    background: rgb($red, $green, $blue);
+}
+
+
+@function teste ($target, $container) {
+    @return ($target/$container) * 100%
+}
+
+p{
+    width: teste(400, 1000); 
+}
+
+
+//aula 9
+//placeholders reaproveitar blocos estáticos
+%center { //agrupa
+    display: block;
+    margin: 0 auto;
+}
+
+
+div{
+    @extend %center;
+}
+
+div.teste{
+    @extend %center;
+}
+
+
+
+//aula 10
+//control directives if else
+
+$cor: pink;
+
+header{
+    @if ($cor == #fff){
+        color: purple;
+    } @else if ($cor == pink){
+        color: brown;
+    } @else{
+        color: #000;
+    }
+}
+
+
+
+
+//aula 11
+//interation 
+
+//for
+
+@for $i from 1 through 3 {
+    .item-#{$i} {
+        width: 2em * $i;
+    }
+}
+
+//each
+$animals: dog, cat, fish, bird;
+@each $animal in $animals{
+    .item-#{$animal}-icon{//interpolação 
+        background-image: url("images") 
+    }   
+}
+
+
+//while
+$i:6;
+@while $i > 0 {
+    .item-#{$i}{
+        width: 2em * $i;
+    }
+
+    $i: $i - 2; 
+}
+
+
+//aula 12
+
+//media
+
+.sidebar {
+    width: 30%;
+    @media screen and (orientation: landscape){
+        width: 40%;
+    }
+}
+
+
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin landscape {
+    @media screen and (orientation: landscape){
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{$tablet-width}){
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$desktop-width}){
+        @content;
+    }
+}
+
+
+
+header {
+    padding: 3em;
+    @include tablet{
+        padding: 2em;
+    }
+}
